@@ -4,6 +4,36 @@ title:  "Derivation and Implementation of the Parallel Cyclic Redundancy Check o
 date:   2026-08-05 20:45:00 -0300
 categories: math, fpga
 ---
+
+* TOC
+{:toc}
+
+# Introduction
+
+The Cyclic-Redundancy-Check (CRC) is an algorithm used in, likely, every single modern computer in the world! The purpose of the CRC is to detect if an error
+has occurred when sending a message from some source to a receiver.
+
+# Serial Cyclic Redundancy Check
+
+The purpose of this section will be to develop an understanding of the two different serial CRCs...
+
+# Problems with the Serial Cyclic Redundancy Check
+
+The purpose of this section is to discuss the problems of with the serial CRC 
+
+# Derivation of the Parallel Cylic Redundancy Check
+
+To begin our derivation of the parallel CRC, let's shall consider the serial CRC circuit shown below in Figure X.
+
+INSERT FIGURE OF CRC
+
+The serial CRC circuit shown in Figure X has the generator polynomial
+
+$$
+  g(x) = 
+$$
+
+
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
 Jekyll requires blog post files to be named according to the following format:
