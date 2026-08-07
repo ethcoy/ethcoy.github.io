@@ -30,22 +30,131 @@ INSERT FIGURE OF CRC
 The serial CRC circuit shown in Figure X has the generator polynomial
 
 $$
-  g(x) = x^4 + x + 1
+g(x) = x^4 + x + 1
 $$
 
-Now, let us consider the state of the CRC circuit $R[n]$ at sample $n$. At the first first sample $n$, the circuit takes on the state
+Now, let us consider the state of the CRC circuit $R[n]$ at sample $n$. At the first sample $n$, the circuit takes on the state
 
+$$
+R[n] = \begin{pmatrix} f_3[n] \\\ f_2[n] \\\ f_1[n] \\\ f_0[n] \end{pmatrix}
+$$
 
-\begin{equation}
-X_{m,n} = 
+Now, let us consider what $R[n]$ is when a rising edge of the driving clock occurs (i.e., what is $R[n + 1]$). Well, this circuit is just a LFSR, so all of the values get shifted, with some modifications depending on the placement of the XORs (denoted by $\oplus$) and the input bit $b[n]$, right? So the state of the CRC circuit after the next rising edge of the clock will be
+
+$$
+R[n + 1] = \begin{pmatrix} f_2[n]  \\\ f_1[n] \\\ f_0[n] \oplus f_3[n] \oplus b[n] \\\ f_3[n] \oplus b[n] \end{pmatrix}
+$$
+
+So, after a rising edge of the clock occurs, this is the relationship that the next state of the CRC circuit has with its initial state. Let's break this matrix up into the sum of a matrix dependent on the states of the flip-flops and another dependent on the bit input into the circuit.
+
+$$
+R[n + 1] = \begin{pmatrix} f_2[n]  \\\ f_1[n] \\\ f_0[n] \oplus f_3[n] \\\ f_3[n] \end{pmatrix} \oplus \begin{pmatrix} 0 \\\ 0 \\\ 1 \\\ 1 \end{pmatrix} b[n]
+$$
+
+Next, let us factor the above equation so the matrix dependent on the state of the flip-flops into the form of some coefficient matrix $A$ multiplied by $R[n]$
+
+$$
+R[n + 1] = 
 \begin{pmatrix}
-  x_{1,1} & x_{1,2} & \cdots & x_{1,n} \\
-  x_{2,1} & x_{2,2} & \cdots & x_{2,n} \\
-  \vdots  & \vdots  & \ddots & \vdots  \\
-  x_{m,1} & x_{m,2} & \cdots & x_{m,n} 
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  1 & 0 & 0 & 1 \\
+  1 & 0 & 0 & 0
 \end{pmatrix}
-(\#eq:matex)
-\end{equation}
+\begin{pmatrix}
+  f_3[n] \\
+  f_2[n] \\
+  f_1[n] \\
+  f_0[n]
+\end{pmatrix} \oplus
+\begin{pmatrix}
+  0 \\
+  0 \\
+  1 \\
+  1
+\end{pmatrix} b[n]
+$$
+
+Notice anything about the first column of the matrix $A$ and the column matrix multiplied by $b[n]$? Well, for one, they are both the same. However, what is even more exciting is that they are the generator polynomial in matrix form! That is, our generator polynomial is given by
+
+$$
+g(x) = x^4 + x + 1
+$$
+
+Which, if we were to represent this as a matrix, it would be
+
+$$
+G' = \begin{pmatrix} 1  \\\ 0 \\\ 0 \\\ 1 \\\ 1 \end{pmatrix}
+$$
+
+Or, in general, for a CRC generator polynomial CRC-N that has an order of N
+
+$$
+G' = 
+\begin{pmatrix}
+  g_{n} \\
+  g_{n - 1} \\
+  \vdots \\
+  g_{1} \\
+  g_{0}
+\end{pmatrix}
+$$
+
+From here, you can see that $R[n + 1]$ is a function of $G$ where
+
+$$
+G = 
+\begin{pmatrix}
+  0 \\
+  0 \\
+  1 \\
+  1
+\end{pmatrix}
+$$
+
+Or, in general
+
+$$
+G = 
+\begin{pmatrix}
+  g_{n - 1} \\
+  g_{n - 2} \\
+  \vdots \\
+  g_{1} \\
+  g_{0}
+\end{pmatrix}
+$$
+
+So, this means that the next state of the CRC circuit after the rising edge of the clock is
+
+$$
+R[n + 1] = A R[n] \oplus G b[n]
+$$
+
+where
+
+$$
+A = 
+\begin{pmatrix}
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  1 & 0 & 0 & 1 \\
+  1 & 0 & 0 & 0
+\end{pmatrix}, \ R[n] = 
+\begin{pmatrix}
+  f_3[n] \\
+  f_2[n] \\
+  f_1[n] \\
+  f_0[n]
+\end{pmatrix}, \ \text{and} \ G =
+\begin{pmatrix}
+  0 \\
+  0 \\
+  1 \\
+  1
+\end{pmatrix}
+$$
+
 
 
 
