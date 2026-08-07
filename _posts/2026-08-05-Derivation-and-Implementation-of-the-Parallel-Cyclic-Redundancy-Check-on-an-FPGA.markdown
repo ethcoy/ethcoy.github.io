@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Derivation and Implementation of the Parallel Cyclic Redundancy Check on an FPGA"
 date:   2026-08-05 20:45:00 -0300
 categories: math, fpga
