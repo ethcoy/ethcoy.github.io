@@ -23,15 +23,16 @@ The purpose of this section is to discuss the problems of with the serial CRC
 
 # Derivation of the Parallel Cylic Redundancy Check
 
-To begin our derivation of the parallel CRC, let's shall consider the serial CRC circuit shown below in Figure X.
+To begin our derivation of the parallel CRC, we shall first consider the serial CRC circuit shown below in Figure X.
 
 INSERT FIGURE OF CRC
 
 The serial CRC circuit shown in Figure X has the generator polynomial
 
 $$
-  g(x) = 
+  g(x) = x^5 + x^4 + x^2 + 1
 $$
+
 
 
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
