@@ -30,8 +30,13 @@ INSERT FIGURE OF CRC
 The serial CRC circuit shown in Figure X has the generator polynomial
 
 $$
-  g(x) = x^5 + x^4 + x^2 + 1
+  g(x) = x^4 + x + 1
 $$
+
+Now, let us consider the state of the CRC circuit $CRC[n]$ at sample $n$.
+
+
+
 
 
 
