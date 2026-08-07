@@ -33,8 +33,19 @@ $$
   g(x) = x^4 + x + 1
 $$
 
-Now, let us consider the state of the CRC circuit $CRC[n]$ at sample $n$.
+Now, let us consider the state of the CRC circuit $R[n]$ at sample $n$. At the first first sample $n$, the circuit takes on the state
 
+
+\begin{equation}
+X_{m,n} = 
+\begin{pmatrix}
+  x_{1,1} & x_{1,2} & \cdots & x_{1,n} \\
+  x_{2,1} & x_{2,2} & \cdots & x_{2,n} \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  x_{m,1} & x_{m,2} & \cdots & x_{m,n} 
+\end{pmatrix}
+(\#eq:matex)
+\end{equation}
 
 
 
