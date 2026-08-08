@@ -1,19 +1,28 @@
 ---
-layout: default
+layout: post
 title:  "Derivation and Implementation of the Parallel Cyclic Redundancy Check on an FPGA"
 date:   2026-08-05 20:45:00 -0300
 categories: math, fpga
 ---
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: {'[+]': [['$', '$']]}
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
 * TOC
 {:toc}
 
 # Introduction
 
-The Cyclic-Redundancy-Check (CRC) is an algorithm used in, likely, every single modern computer in the world! The purpose of the CRC is to detect if an error
-has occurred when sending a message from some source to a receiver.
-
-Going to touch this up in the future...
+Meaningful introduction here...
 
 # Serial Cyclic Redundancy Check
 
@@ -35,13 +44,13 @@ $$
 g(x) = x^4 + x + 1
 $$
 
-Now, let us consider the state of the CRC circuit $R[n]$ at sample $n$. At the first sample $n$, the circuit takes on the state
+Now, let us consider the state of the CRC circuit $$R[n]$$ at sample $$n$$. At the first sample $$n$$, the circuit takes on the state
 
 $$
 R[n] = \begin{pmatrix} f_3[n] \\\ f_2[n] \\\ f_1[n] \\\ f_0[n] \end{pmatrix}
 $$
 
-Now, let us consider what $R[n]$ is when a rising edge of the driving clock occurs (i.e., what is $R[n + 1]$). Well, this circuit is just a LFSR, so all of the values get shifted, with some modifications depending on the placement of the XORs (denoted by $\oplus$) and the input bit $b[n]$, right? So the state of the CRC circuit after the next rising edge of the clock will be
+Now, let us consider what $$R[n]$$ is when a rising edge of the driving clock occurs (i.e., what is $$R[n + 1]$$). Well, this circuit is just a LFSR, so all of the values get shifted, with some modifications depending on the placement of the XORs (denoted by $$\oplus$$) and the input bit $$b[n]$$, right? So the state of the CRC circuit after the next rising edge of the clock will be
 
 $$
 R[n + 1] = \begin{pmatrix} f_2[n]  \\\ f_1[n] \\\ f_0[n] \oplus f_3[n] \oplus b[n] \\\ f_3[n] \oplus b[n] \end{pmatrix}
@@ -50,10 +59,16 @@ $$
 So, after a rising edge of the clock occurs, this is the relationship that the next state of the CRC circuit has with its initial state. Let's break this matrix up into the sum of a matrix dependent on the states of the flip-flops and another dependent on the bit input into the circuit.
 
 $$
-R[n + 1] = \begin{pmatrix} f_2[n]  \\\ f_1[n] \\\ f_0[n] \oplus f_3[n] \\\ f_3[n] \end{pmatrix} \oplus \begin{pmatrix} 0 \\\ 0 \\\ 1 \\\ 1 \end{pmatrix} b[n]
+R[n + 1] = \begin{pmatrix} f_2[n]  \\\ f_1[n] \\\ f_0[n] \oplus f_3[n] \\\ f_3[n] \end{pmatrix} \oplus 
+\begin{pmatrix} 
+  0 \\ 
+  0 \\
+  1 \\
+  1 
+\end{pmatrix} b[n]
 $$
 
-Next, let us factor the above equation so the matrix dependent on the state of the flip-flops into the form of some coefficient matrix $A$ multiplied by $R[n]$
+Next, let us factor the above equation so the matrix dependent on the state of the flip-flops into the form of some coefficient matrix $$A$$ multiplied by $$R[n]$$
 
 $$
 R[n + 1] = 
@@ -77,7 +92,7 @@ R[n + 1] =
 \end{pmatrix} b[n]
 $$
 
-Notice anything about the first column of the matrix $A$ and the column matrix multiplied by $b[n]$? Well, for one, they are both the same. However, what is even more exciting is that they are the generator polynomial in matrix form! That is, our generator polynomial is given by
+Notice anything about the first column of the matrix $$A$$ and the column matrix multiplied by $$b[n]$$? Well, for one, they are both the same. However, what is even more exciting is that they are the generator polynomial in matrix form! That is, our generator polynomial is given by
 
 $$
 g(x) = x^4 + x + 1
@@ -86,7 +101,14 @@ $$
 Which, if we were to represent this as a matrix, it would be
 
 $$
-G' = \begin{pmatrix} 1  \\\ 0 \\\ 0 \\\ 1 \\\ 1 \end{pmatrix}
+G' = 
+\begin{pmatrix} 
+  1 \\ 
+  0 \\ 
+  0 \\ 
+  1 \\ 
+  1 
+\end{pmatrix}
 $$
 
 Or, in general, for a CRC generator polynomial CRC-N that has an order of N
@@ -102,7 +124,7 @@ G' =
 \end{pmatrix}
 $$
 
-From here, you can see that $R[n + 1]$ is a function of $G$ where
+From here, you can see that $$R[n + 1]$$ is a function of $$G$$ where
 
 $$
 G = 
@@ -157,13 +179,40 @@ A =
 \end{pmatrix}
 $$
 
-Okay, so now that we have a nice equation that relates state $n + 1$ with state $n$, let us consider how state $n + 2$ relates with state $n$
+Or, in general
+
+$$
+A = 
+\begin{pmatrix}
+  g_{n - 1} & 1         & 0         & \cdots    & 0 \\
+  g_{n - 2} & 0         & 1         & 0         & \vdots \\
+  \vdots    & \vdots    & 0         & \ddots    & 0 \\
+  g_{1}     & 0         & \cdots    & 0         & 1 \\
+  g_{0}     & 0         & \cdots    & \cdots    & 0
+\end{pmatrix}, \ R[n] = 
+\begin{pmatrix}
+  f_{n - 1}[n] \\
+  f_{n - 2}[n] \\
+  \vdots \\
+  f_1[n] \\
+  f_0[n]
+\end{pmatrix}, \ \text{and} \ G =
+\begin{pmatrix}
+  g_{n - 1} \\
+  g_{n - 2} \\
+  \vdots \\
+  g_{1} \\
+  g_{0}
+\end{pmatrix}
+$$
+
+Okay, so now that we have a nice equation that relates state $$n + 1$$ with state $$n$$, let us consider how state $$n + 2$$ relates with state $$n$$
 
 $$
 R[n + 2] = A R[n + 1] \oplus G b[n + 1]
 $$
 
-Well, we know what $R[n + 1]$ is, so
+Well, we know what $$R[n + 1]$$ is, so
 
 $$
 R[n + 2] = A (A R[n] \oplus G b[n]) \oplus G b[n + 1]
@@ -173,7 +222,7 @@ $$
 R[n + 2] = A^2 R[n] \oplus A G b[n] \oplus b[n + 1]
 $$
 
-For state $n + 3$
+For state $$n + 3$$
 
 $$
 R[n + 3] = A R[n + 2] \oplus G b[n + 2]
@@ -195,13 +244,13 @@ $$
 R[n + 3] = A^3 R[n] \oplus A^2 G b[n] \oplus A G b[n + 1] \oplus G b[n + 2]
 $$
 
-Notice the pattern yet? Well, if we were to relate state $n + i$ with state $n$, the relationship would be
+Notice the pattern yet? Well, if we were to relate state $$n + i$$ with state $$n$$, the relationship would be
 
 $$
 R[n + i] = A^i R[n] \oplus A^{i - 1} G b[n] \oplus A^{i - 2} \oplus \cdots \oplus A^2 G b[n + i - 3] \oplus A G b[n + i - 2] \oplus G b[n + i - 1]
 $$
 
-And that is it! The equation relating the output of a CRC circuit given $i$ input bits in parallel is given by the equation above.
+And that is it! The equation relating the output of a CRC circuit given $$i$$ input bits in parallel is given by the equation above.
 
 # Implementation of the Parallel Cylic Redundancy Check on an FPGA
 

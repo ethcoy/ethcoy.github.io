@@ -21,8 +21,8 @@
 title: Ethan Coyle's Electronics, FPGA, Math, etc. Blog
 email: ethan.coyle@unb.ca
 description: >- # this means to ignore newlines until "baseurl:"
-  This blog contains posts about topics that I found particularly interesting and useful to document. 
-  Many of the posts follow a particular theme, that is, first building a fundamental understanding on 
+  This blog contains posts about topics that I found particularly interesting and useful to document.
+  Many of the posts follow a particular theme, that is, first building a fundamental understanding on
   the topic, and then showing how, if possible, it can be implemented.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
@@ -30,7 +30,6 @@ twitter_username:
 github_username:  ethcoy
 
 # Build settings
-markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
