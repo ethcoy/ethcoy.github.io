@@ -257,6 +257,32 @@ And that is it! The equation relating the output of a CRC circuit given $$i$$ in
 So, now you might be asking "How can I implement this on an FPGA?". Well, it is actually quite simple. All you have to do is unroll this large summation and multiplication of matrices. I will not go through all of the details on how to write this out in Verilog, but the method I chose was to define the equation in a function, allowing the synthesizer to infer combinatorial logic and then registered the output of the function when some valid input was present, and then fed that back into the function. My implementation of the parallel CRC can be found below. The module has a parameterizable generator polynomial and input bit width, along with some other added functionalities to support use with IEEE 802.3.
 
 ```verilog
+/*
+
+MIT License
+
+Copyright (c) 2026 Ethan Coyle
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
 module crc #(
     parameter c_DATA_WIDTH = 8,
     parameter c_GEN_POLY = 32'h04c11db7,
