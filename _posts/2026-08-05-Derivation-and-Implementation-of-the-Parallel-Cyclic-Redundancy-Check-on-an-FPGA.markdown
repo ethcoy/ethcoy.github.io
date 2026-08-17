@@ -247,7 +247,7 @@ $$
 Notice the pattern yet? Well, if we were to relate state $$n + i$$ with state $$n$$, the relationship would be
 
 $$
-R[n + i] = A^i R[n] \oplus A^{i - 1} G b[n] \oplus A^{i - 2} \oplus \cdots \oplus A^2 G b[n + i - 3] \oplus A G b[n + i - 2] \oplus G b[n + i - 1]
+R[n + i] = A^i R[n] \oplus A^{i - 1} G b[n] \oplus A^{i - 2} G b[n + 1] \oplus \cdots \oplus A^2 G b[n + i - 3] \oplus A G b[n + i - 2] \oplus G b[n + i - 1]
 $$
 
 And that is it! The equation relating the output of a CRC circuit given $$i$$ input bits in parallel is given by the equation above.
